@@ -4,12 +4,12 @@
   "engineFactory": "org.template.classification.ClassificationEngine",
   "datasource": {
     "params": {
-      "appId": 2
+      "appId": 1
     }
   },
   "algorithms": [
     {
-      "name": "naive",
+      "name": "my",
       "params": {
         "lambda": 1.0
       }

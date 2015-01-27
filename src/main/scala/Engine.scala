@@ -19,8 +19,8 @@ object ClassificationEngine extends IEngineFactory {
   def apply() = {
     new Engine(
       classOf[DataSource],
-      classOf[Preparator],
-      Map("naive" -> classOf[NaiveBayesAlgorithm]),
+      classOf[MyPreparator],
+      Map("my" -> classOf[MyAlgorithm]),
       classOf[Serving])
   }
 }

@@ -7,6 +7,9 @@ import org.apache.spark.mllib.classification.NaiveBayes
 import org.apache.spark.mllib.classification.NaiveBayesModel
 import org.apache.spark.mllib.linalg.Vectors
 import org.apache.spark.SparkContext
+import org.apache.commons.math3.
+distribution.
+UniformRealDistribution
 
 import grizzled.slf4j.Logger
 
@@ -27,6 +30,8 @@ class NaiveBayesAlgorithm(val ap: AlgorithmParams)
       " Please check if DataSource generates TrainingData" +
       " and Preprator generates PreparedData correctly.")
 
+    val x = new UniformRealDistribution()
+    
     NaiveBayes.train(data.labeledPoints, ap.lambda)
   }
 
