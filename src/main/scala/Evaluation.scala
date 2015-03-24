@@ -14,7 +14,7 @@ case class Precision
   extends AverageMetric[EmptyEvaluationInfo, 
       Query, PredictedResult, ActualResult] {
   def calculate(query: Query, predicted: PredictedResult, actual: ActualResult)
-  : Double = (if (predicted.label == actual.label) 1.0 else 0.0)
+  : Double = if (predicted.label == actual.label) 1.0 else 0.0
 }
 
 object PrecisionEvaluation extends Evaluation {
@@ -35,7 +35,7 @@ object EngineParamsList extends EngineParamsGenerator {
   // algorithm parameters. In this case, we evaluate 3 engine params, each with
   // a different algorithm params value.
   engineParamsList = Seq(
-    baseEP.copy(algorithmParamsList = Seq(("my", AlgorithmParams(10.0)))),
-    baseEP.copy(algorithmParamsList = Seq(("my", AlgorithmParams(100.0)))),
-    baseEP.copy(algorithmParamsList = Seq(("my", AlgorithmParams(1000.0)))))
+    baseEP.copy(algorithmParamsList = Seq(("my", MyAlgorithmParams(10.0)))),
+    baseEP.copy(algorithmParamsList = Seq(("my", MyAlgorithmParams(100.0)))),
+    baseEP.copy(algorithmParamsList = Seq(("my", MyAlgorithmParams(1000.0)))))
 }
