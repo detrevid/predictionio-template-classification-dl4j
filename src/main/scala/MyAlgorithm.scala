@@ -1,28 +1,10 @@
 package org.template.classification
 
-import java.io._
-import java.util
-import java.util.concurrent.ConcurrentHashMap
-
-import org.junit.Assert._
-
 import io.prediction.controller.P2LAlgorithm
 import io.prediction.controller.Params
-import org.apache.commons.lang3.SerializationUtils
+
+import grizzled.slf4j.Logger
 import org.apache.spark.SparkContext
-
-import scala.collection.mutable
-
-import java.util.LinkedHashMap
-import java.util.Collections
-
-//IRIS//
-
-import org.apache.commons.math3.random.MersenneTwister
-import org.apache.commons.math3.random.RandomGenerator
-import org.deeplearning4j.datasets.iterator.DataSetIterator
-import org.deeplearning4j.datasets.iterator.impl.IrisDataSetIterator
-import org.deeplearning4j.eval.Evaluation
 import org.deeplearning4j.models.featuredetectors.rbm.RBM
 import org.deeplearning4j.nn.api.OptimizationAlgorithm
 import org.deeplearning4j.nn.conf.MultiLayerConfiguration
@@ -31,16 +13,12 @@ import org.deeplearning4j.nn.conf.`override`.ClassifierOverride
 import org.deeplearning4j.nn.layers.factory.PretrainLayerFactory
 import org.deeplearning4j.nn.multilayer.MultiLayerNetwork
 import org.deeplearning4j.nn.weights.WeightInit
-import org.nd4j.linalg.api.ndarray.INDArray
-import org.nd4j.linalg.dataset.DataSet
-import org.nd4j.linalg.dataset.SplitTestAndTrain
 import org.nd4j.linalg.factory.Nd4j
 import org.nd4j.linalg.lossfunctions.LossFunctions
 
-////
+import scala.collection.mutable
 
-import grizzled.slf4j.Logger
-
+import java.io._
 
 case class MyAlgorithmParams(
                               lambda: Double
@@ -54,7 +32,7 @@ class MyAlgorithm(val ap: MyAlgorithmParams)
   def train(sc: SparkContext, data: MyPreparedData): MyModel = {
 
     val conf: MultiLayerConfiguration =
-      new NeuralNetConfiguration.Builder().iterations(100)
+      new NeuralNetConfiguration.Builder().iterations(10)
         .layerFactory(new PretrainLayerFactory(classOf[RBM])).weightInit(WeightInit.SIZE)
         .dist(Nd4j.getDistributions.createNormal(1e-5, 1)).activationFunction("tanh")
         .momentum(0.9).dropOut(0.8)
