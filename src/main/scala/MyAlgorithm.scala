@@ -59,13 +59,16 @@ class MyAlgorithm(val ap: MyAlgorithmParams)
 }
 
 class MyModel(
-             val labels: mutable.Map[Int, String],
+             val labels: Array[String],
              val net: MultiLayerNetwork)
 extends Serializable {
   @transient lazy val logger = Logger[this.type]
   
   def predict(features: Array[Double]): String = {
-    val pred = net.predict(Nd4j.create(features))(0)
-    labels.getOrElse(pred, "") //ToDO make it better
+    val features_array = Nd4j.create(Array(features,Array(3.0,0.0,0.0)))
+    this.logger.info(features_array.toString())
+    this.logger.info("AFTER FEATURES ARRAY")
+    val pred : Int = net.predict(features_array)(0)
+    labels(pred)
   }
 }
