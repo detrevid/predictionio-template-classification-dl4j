@@ -16,8 +16,6 @@ import org.deeplearning4j.nn.weights.WeightInit
 import org.nd4j.linalg.factory.Nd4j
 import org.nd4j.linalg.lossfunctions.LossFunctions
 
-import scala.collection.mutable
-
 import java.io._
 
 case class AlgorithmParams() extends Params

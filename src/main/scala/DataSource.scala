@@ -2,18 +2,14 @@ package org.template.classification
 
 import io.prediction.controller.PDataSource
 import io.prediction.controller.EmptyEvaluationInfo
-import io.prediction.controller.EmptyActualResult
 import io.prediction.controller.Params
-import io.prediction.data.storage.Event
 import io.prediction.data.storage.Storage
 
-import org.apache.spark.SparkContext
-import org.apache.spark.SparkContext._
-import org.apache.spark.rdd.RDD
-import org.apache.spark.mllib.regression.LabeledPoint
-import org.apache.spark.mllib.linalg.Vectors
-
 import grizzled.slf4j.Logger
+import org.apache.spark.SparkContext
+import org.apache.spark.mllib.linalg.Vectors
+import org.apache.spark.mllib.regression.LabeledPoint
+import org.apache.spark.rdd.RDD
 
 case class DataSourceParams(
   appId: Int,

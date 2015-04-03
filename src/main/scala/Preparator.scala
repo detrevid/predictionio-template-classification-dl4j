@@ -8,9 +8,9 @@ import org.nd4j.linalg.factory.Nd4j
 import org.nd4j.linalg.dataset.DataSet
 
 class PreparedData(
-                      val dataSet: DataSet,
-                      val labels: Array[String]
-                      ) extends Serializable
+                    val dataSet: DataSet,
+                    val labels: Array[String]
+                    ) extends Serializable
 
 class Preparator extends PPreparator[TrainingData, PreparedData] {
 
