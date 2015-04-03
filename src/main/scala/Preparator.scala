@@ -7,20 +7,16 @@ import org.apache.spark.SparkContext
 import org.nd4j.linalg.factory.Nd4j
 import org.nd4j.linalg.dataset.DataSet
 
-import scala.collection.mutable
-import scala.collection.JavaConverters._
-import scala.util.Sorting.stableSort
-
-class MyPreparedData(
+class PreparedData(
                       val dataSet: DataSet,
                       val labels: Array[String]
                       ) extends Serializable
 
-class MyPreparator extends PPreparator[TrainingData, MyPreparedData] {
+class Preparator extends PPreparator[TrainingData, PreparedData] {
 
   @transient lazy val logger = Logger[this.type]
 
-  def prepare(sc: SparkContext, trainingData: TrainingData): MyPreparedData = {
+  def prepare(sc: SparkContext, trainingData: TrainingData): PreparedData = {
     this.logger.info("START PREPARE")
     var dFeatures: List[Array[Double]] = List()
     var dLabels: List[String] = List()
@@ -32,24 +28,20 @@ class MyPreparator extends PPreparator[TrainingData, MyPreparedData] {
     }
 
     val labelsAm = dLabels.distinct.length
-    var dLabelsPrep: List[List[Double]] = List()
-    var biggestL: Int = 0
+    var dLabelsPrep: List[Array[Double]] = List()
+    var biggestL: Int = -1
     var last: String = ""
     for (lb <- dLabels) {
-      var labPrep: List[Double] = List.fill(labelsAm)(0.0)
-      if (lb == last) {
-        labels_names = lb :: labels_names
+      if (lb != last) {
+        labels_names ::= lb
         last = lb
         biggestL += 1
       }
-      labPrep = labPrep.updated(biggestL, 1.0)
-      dLabelsPrep = labPrep :: dLabelsPrep
+      dLabelsPrep ::= Array.fill(labelsAm)(0.0).updated(biggestL, 1.0)
     }
-    labels_names = labels_names.reverse
-    dLabelsPrep = dLabelsPrep.reverse
-    val dsFeatures = Nd4j.create(dFeatures.toArray)
-    val dsLabels = Nd4j.create(dLabelsPrep.map(x => x.toArray).toArray)
-    val dataSet = new DataSet(dsFeatures, dsLabels)
-    new MyPreparedData(new DataSet(dsFeatures, dsLabels), labels_names.toArray)
+
+    val dsFeatures = Nd4j.create(dFeatures.reverse.toArray)
+    val dsLabels = Nd4j.create(dLabelsPrep.toArray)
+    new PreparedData(new DataSet(dsFeatures, dsLabels), labels_names.toArray)
   }
 }

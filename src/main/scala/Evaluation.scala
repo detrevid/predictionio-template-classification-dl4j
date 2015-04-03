@@ -31,7 +31,7 @@ object EngineParamsList extends EngineParamsGenerator {
   // algorithm parameters. In this case, we evaluate 3 engine params, each with
   // a different algorithm params value.
   engineParamsList = Seq(
-    baseEP.copy(algorithmParamsList = Seq(("my", MyAlgorithmParams(10.0)))),
-    baseEP.copy(algorithmParamsList = Seq(("my", MyAlgorithmParams(100.0)))),
-    baseEP.copy(algorithmParamsList = Seq(("my", MyAlgorithmParams(1000.0)))))
+    baseEP.copy(algorithmParamsList = Seq(("my", AlgorithmParams(10.0)))),
+    baseEP.copy(algorithmParamsList = Seq(("my", AlgorithmParams(100.0)))),
+    baseEP.copy(algorithmParamsList = Seq(("my", AlgorithmParams(1000.0)))))
 }

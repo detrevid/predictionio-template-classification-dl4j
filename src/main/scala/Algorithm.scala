@@ -20,16 +20,16 @@ import scala.collection.mutable
 
 import java.io._
 
-case class MyAlgorithmParams(
+case class AlgorithmParams(
                               lambda: Double
                               ) extends Params
 
-class MyAlgorithm(val ap: MyAlgorithmParams)
-  extends P2LAlgorithm[MyPreparedData, MyModel, Query, PredictedResult] {
+class Algorithm(val ap: AlgorithmParams)
+  extends P2LAlgorithm[PreparedData, MyModel, Query, PredictedResult] {
 
   @transient lazy val logger = Logger[this.type]
 
-  def train(sc: SparkContext, data: MyPreparedData): MyModel = {
+  def train(sc: SparkContext, data: PreparedData): MyModel = {
 
     val conf: MultiLayerConfiguration =
       new NeuralNetConfiguration.Builder().iterations(10)
@@ -44,6 +44,8 @@ class MyAlgorithm(val ap: MyAlgorithmParams)
         .learningRate(1e-1f).nIn(3).nOut(4).list(2)
         .useDropConnect(false)
         .hiddenLayerSizes(3).`override`(new ClassifierOverride(1)).build
+
+    this.logger.info(data.labels.mkString(" "))
 
     val d: MultiLayerNetwork = new MultiLayerNetwork(conf)
 
