@@ -16,9 +16,12 @@ import org.deeplearning4j.nn.weights.WeightInit
 import org.nd4j.linalg.factory.Nd4j
 import org.nd4j.linalg.lossfunctions.LossFunctions
 
-import java.io._
-
-case class AlgorithmParams() extends Params
+case class AlgorithmParams(
+                            iterations: Int    = 10,
+                            layers:     Int    = 2,
+                            momentum:   Double = 0.9,
+                            dropOut:    Double = 0.8
+                            ) extends Params
 
 class Algorithm(val ap: AlgorithmParams)
   extends P2LAlgorithm[PreparedData, Model, Query, PredictedResult] {
@@ -28,20 +31,18 @@ class Algorithm(val ap: AlgorithmParams)
   def train(sc: SparkContext, data: PreparedData): Model = {
 
     val conf: MultiLayerConfiguration =
-      new NeuralNetConfiguration.Builder().iterations(10)
+      new NeuralNetConfiguration.Builder().iterations(ap.iterations)
         .layerFactory(new PretrainLayerFactory(classOf[RBM])).weightInit(WeightInit.SIZE)
         .dist(Nd4j.getDistributions.createNormal(1e-5, 1)).activationFunction("tanh")
-        .momentum(0.9).dropOut(0.8)
+        .momentum(ap.momentum).dropOut(ap.dropOut)
         .optimizationAlgo(OptimizationAlgorithm.GRADIENT_DESCENT)
         .constrainGradientToUnitNorm(true).k(5).regularization(true)
         .l2(2e-4).visibleUnit(RBM.VisibleUnit.GAUSSIAN)
         .hiddenUnit(RBM.HiddenUnit.RECTIFIED)
         .lossFunction(LossFunctions.LossFunction.RECONSTRUCTION_CROSSENTROPY)
-        .learningRate(1e-1f).nIn(3).nOut(data.labels.length).list(2)
+        .learningRate(1e-1f).nIn(3).nOut(data.labels.length).list(ap.layers)
         .useDropConnect(false)
         .hiddenLayerSizes(3).`override`(new ClassifierOverride(1)).build
-
-    this.logger.info(data.labels.mkString(" "))
 
     val d: MultiLayerNetwork = new MultiLayerNetwork(conf)
 
@@ -60,6 +61,7 @@ class Model(
              val labels: Array[String],
              val net: MultiLayerNetwork)
 extends Serializable {
+
   @transient lazy val logger = Logger[this.type]
   
   def predict(features: Array[Double]): String = {

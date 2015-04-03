@@ -17,8 +17,7 @@ case class DataSourceParams(
 ) extends Params
 
 class DataSource(val dsp: DataSourceParams)
-  extends PDataSource[TrainingData,
-      EmptyEvaluationInfo, Query, ActualResult] {
+  extends PDataSource[TrainingData, EmptyEvaluationInfo, Query, ActualResult] {
 
   @transient lazy val logger = Logger[this.type]
 
@@ -90,7 +89,7 @@ class DataSource(val dsp: DataSourceParams)
 
     // K-fold splitting
     val evalK = dsp.evalK.get
-    val indexedPoints: RDD[(LabeledPoint, Long)] = labeledPoints.zipWithIndex
+    val indexedPoints: RDD[(LabeledPoint, Long)] = labeledPoints.zipWithIndex()
 
     (0 until evalK).map { idx => 
       val trainingPoints = indexedPoints.filter(_._2 % evalK != idx).map(_._1)
