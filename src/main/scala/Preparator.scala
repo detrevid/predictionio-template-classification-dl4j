@@ -20,7 +20,7 @@ class Preparator extends PPreparator[TrainingData, PreparedData] {
     this.logger.info("START PREPARE")
     var dFeatures: List[Array[Double]] = List()
     var dLabels: List[String] = List()
-    var labels_names: List[String] = List()
+    var labelsNames: List[String] = List()
 
     for (lb <- trainingData.labeledPoints.collect().sortWith(_.label.toString < _.label.toString)) {
       dFeatures = lb.features.toArray :: dFeatures
@@ -33,7 +33,7 @@ class Preparator extends PPreparator[TrainingData, PreparedData] {
     var last: String = ""
     for (lb <- dLabels) {
       if (lb != last) {
-        labels_names ::= lb
+        labelsNames ::= lb
         last = lb
         biggestL += 1
       }
@@ -42,6 +42,6 @@ class Preparator extends PPreparator[TrainingData, PreparedData] {
 
     val dsFeatures = Nd4j.create(dFeatures.reverse.toArray)
     val dsLabels = Nd4j.create(dLabelsPrep.toArray)
-    new PreparedData(new DataSet(dsFeatures, dsLabels), labels_names.toArray)
+    new PreparedData(new DataSet(dsFeatures, dsLabels), labelsNames.toArray)
   }
 }

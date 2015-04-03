@@ -6,7 +6,7 @@ import io.prediction.controller.EngineParams
 import io.prediction.controller.EngineParamsGenerator
 import io.prediction.controller.Evaluation
 
-case class Precision 
+case class Precision()
   extends AverageMetric[EmptyEvaluationInfo, 
       Query, PredictedResult, ActualResult] {
   def calculate(query: Query, predicted: PredictedResult, actual: ActualResult)
@@ -31,7 +31,7 @@ object EngineParamsList extends EngineParamsGenerator {
   // algorithm parameters. In this case, we evaluate 3 engine params, each with
   // a different algorithm params value.
   engineParamsList = Seq(
-    baseEP.copy(algorithmParamsList = Seq(("my", AlgorithmParams(10.0)))),
-    baseEP.copy(algorithmParamsList = Seq(("my", AlgorithmParams(100.0)))),
-    baseEP.copy(algorithmParamsList = Seq(("my", AlgorithmParams(1000.0)))))
+    baseEP.copy(algorithmParamsList = Seq(("my", AlgorithmParams()))),
+    baseEP.copy(algorithmParamsList = Seq(("my", AlgorithmParams()))),
+    baseEP.copy(algorithmParamsList = Seq(("my", AlgorithmParams()))))
 }

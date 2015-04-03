@@ -20,7 +20,7 @@ object ClassificationEngine extends IEngineFactory {
     new Engine(
       classOf[DataSource],
       classOf[Preparator],
-      Map("my" -> classOf[Algorithm]),
+      Map("alg" -> classOf[Algorithm]),
       classOf[Serving])
   }
 }

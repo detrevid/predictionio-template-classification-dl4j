@@ -9,9 +9,8 @@
   },
   "algorithms": [
     {
-      "name": "my",
+      "name": "alg",
       "params": {
-        "lambda": 1.0
       }
     }
   ]

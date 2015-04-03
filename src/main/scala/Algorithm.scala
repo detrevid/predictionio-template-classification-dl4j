@@ -20,16 +20,14 @@ import scala.collection.mutable
 
 import java.io._
 
-case class AlgorithmParams(
-                              lambda: Double
-                              ) extends Params
+case class AlgorithmParams() extends Params
 
 class Algorithm(val ap: AlgorithmParams)
-  extends P2LAlgorithm[PreparedData, MyModel, Query, PredictedResult] {
+  extends P2LAlgorithm[PreparedData, Model, Query, PredictedResult] {
 
   @transient lazy val logger = Logger[this.type]
 
-  def train(sc: SparkContext, data: PreparedData): MyModel = {
+  def train(sc: SparkContext, data: PreparedData): Model = {
 
     val conf: MultiLayerConfiguration =
       new NeuralNetConfiguration.Builder().iterations(10)
@@ -41,7 +39,7 @@ class Algorithm(val ap: AlgorithmParams)
         .l2(2e-4).visibleUnit(RBM.VisibleUnit.GAUSSIAN)
         .hiddenUnit(RBM.HiddenUnit.RECTIFIED)
         .lossFunction(LossFunctions.LossFunction.RECONSTRUCTION_CROSSENTROPY)
-        .learningRate(1e-1f).nIn(3).nOut(4).list(2)
+        .learningRate(1e-1f).nIn(3).nOut(data.labels.length).list(2)
         .useDropConnect(false)
         .hiddenLayerSizes(3).`override`(new ClassifierOverride(1)).build
 
@@ -51,16 +49,16 @@ class Algorithm(val ap: AlgorithmParams)
 
     d.fit(data.dataSet)
 
-    new MyModel(data.labels, d)
+    new Model(data.labels, d)
   }
 
-  def predict(model: MyModel, query: Query): PredictedResult = {
+  def predict(model: Model, query: Query): PredictedResult = {
     val label : String = model.predict(query.features)
     new PredictedResult(label)
   }
 }
 
-class MyModel(
+class Model(
              val labels: Array[String],
              val net: MultiLayerNetwork)
 extends Serializable {
@@ -68,7 +66,7 @@ extends Serializable {
   
   def predict(features: Array[Double]): String = {
     val features_array = Nd4j.create(Array(features,Array(3.0,0.0,0.0)))
-    this.logger.info(features_array.toString())
+    this.logger.info(features_array.toString)
     this.logger.info("AFTER FEATURES ARRAY")
     val pred : Int = net.predict(features_array)(0)
     labels(pred)
