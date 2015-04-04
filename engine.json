@@ -11,7 +11,7 @@
     {
       "name": "alg",
       "params": {
-        "iterations": 10,
+        "iterations": 100,
         "layers": 2,
         "momentum": 0.8,
         "dropOut": 0.9
