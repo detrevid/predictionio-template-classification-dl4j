@@ -9,9 +9,9 @@ organization := "io.prediction"
 resolvers += Resolver.mavenLocal
 
 libraryDependencies ++= Seq(
-  "io.prediction"             %% "core"                 % pioVersion.value % "provided" exclude("org.apache.commons", "commons-math3"),
-  "org.apache.spark"          %% "spark-core"           % "1.2.0"          % "provided" exclude("org.apache.commons", "commons-math3"),
-  "org.apache.spark"          %% "spark-mllib"          % "1.2.0"          % "provided" exclude("org.apache.commons", "commons-math3"),
+  "io.prediction"             %% "core"                 % pioVersion.value            % "provided",
+  "org.apache.spark"          %% "spark-core"           % "1.2.0"                     % "provided",
+  "org.apache.spark"          %% "spark-mllib"          % "1.2.0"                     % "provided",
   "org.deeplearning4j"         % "deeplearning4j-core"  % "0.0.3.3.3.alpha1-SNAPSHOT",
   "org.nd4j"                   % "nd4j-jblas"           % "0.0.3.5.5.3-SNAPSHOT"
 )
@@ -20,8 +20,7 @@ excludedJars in assembly := {
   val cp = (fullClasspath in assembly).value
   val excluded = Seq(
     "akka-actor_2.10-2.3.4.jar",
-    "akka-remote_2.10-2.3.4.jar",
-    "commons-math3-3.1.1.jar"
+    "akka-remote_2.10-2.3.4.jar"
   )
   cp filter {jar => excluded.contains(jar.data.getName)}
 }
