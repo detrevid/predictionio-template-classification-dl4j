@@ -2,7 +2,7 @@ import AssemblyKeys._
 
 assemblySettings
 
-name := "template-scala-parallel-classification"
+name := "predictionio-template-classification-dl4j"
 
 organization := "io.prediction"
 
