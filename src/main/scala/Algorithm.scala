@@ -20,6 +20,7 @@ import org.nd4j.linalg.lossfunctions.LossFunctions
 case class AlgorithmParams(
   iterations: Int = 10,
   layers: Int = 2,
+  hiddenLayersSizes: Seq[Int] = List(3),
   momentum: Double = 0.9,
   dropOut: Double = 0.8
 ) extends Params
@@ -45,7 +46,7 @@ class Algorithm(val ap: AlgorithmParams)
         .lossFunction(LossFunctions.LossFunction.RMSE_XENT)
         .learningRate(1e-1f).iterationListener(new ScoreIterationListener(2))
         .nIn(3).nOut(data.labels.length).list(ap.layers)
-        .hiddenLayerSizes(3).`override`(new ClassifierOverride(1)).build
+        .hiddenLayerSizes(ap.hiddenLayersSizes: _*).`override`(new ClassifierOverride(1)).build
 
     val d: MultiLayerNetwork = new MultiLayerNetwork(conf)
 
