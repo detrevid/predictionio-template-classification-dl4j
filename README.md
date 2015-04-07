@@ -5,9 +5,11 @@ An classification engine template that uses Deeplearning4j library.
 ##1. Install and Run PredictionIO
 First you need to [install PredictionIO 0.9.1](http://docs.prediction.io/install/) (if you haven't done it).
 Let's say you have installed PredictionIO at /home/yourname/PredictionIO/. For convenience, add PredictionIO's binary command path to your PATH, i.e. /home/yourname/PredictionIO/bin
+
 ```
 PATH=$PATH:/home/yourname/PredictionIO/bin; export PATH
 ```
+
 Once you have completed the installation process, please make sure all the components (PredictionIO Event Server, Elasticsearch, and HBase) are up and running.
 
 ```
@@ -16,6 +18,7 @@ pio-start-all
 For versions before 0.9.1, you need to individually get the PredictionIO Event Server, Elasticsearch, and HBase up and running.
 
 You can check the status by running:
+
 ```
 pio status
 ```
@@ -74,5 +77,6 @@ git pull
 ./setup.sh
 ```
 
-##3. Follow [Quick Start - Classification Engine Template](http://docs.prediction.io/templates/classification/quickstart/) from the 3. subsection.
+##3. Follow [Quick Start - Classification Engine Template](http://docs.prediction.io/templates/classification/quickstart/) starting from the 3. subsection.
 
+##You can learn more about Deeplearning4j studding [examples](https://github.com/deeplearning4j/dl4j-0.0.3.3-examples).
