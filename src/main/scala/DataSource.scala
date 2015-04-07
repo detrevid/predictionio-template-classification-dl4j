@@ -42,8 +42,8 @@ class DataSource(val dsp: DataSourceParams)
           )
         } catch {
           case e: Exception =>
-            logger.error(s"Failed to get properties ${properties} of" +
-              s" ${entityId}. Exception: ${e}.")
+            logger.error(s"Failed to get properties $properties of" +
+              s" $entityId. Exception: $e.")
             throw e
         }
       }.cache()
@@ -80,8 +80,8 @@ class DataSource(val dsp: DataSourceParams)
           )
         } catch {
           case e: Exception =>
-            logger.error(s"Failed to get properties ${properties} of" +
-              s" ${entityId}. Exception: ${e}.")
+            logger.error(s"Failed to get properties $properties of" +
+              s" $entityId. Exception: $e.")
             throw e
         }
       }.cache()
