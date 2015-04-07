@@ -22,7 +22,8 @@ case class AlgorithmParams(
   layers: Int = 2,
   hiddenLayersSizes: Seq[Int] = List(3),
   momentum: Double = 0.9,
-  dropOut: Double = 0.8
+  dropOut: Double = 0.8,
+  learningRate: Double = 0.3
 ) extends Params
 
 class Algorithm(val ap: AlgorithmParams)
@@ -44,7 +45,7 @@ class Algorithm(val ap: AlgorithmParams)
         .l2(2e-4).visibleUnit(RBM.VisibleUnit.GAUSSIAN)
         .hiddenUnit(RBM.HiddenUnit.RECTIFIED)
         .lossFunction(LossFunctions.LossFunction.RMSE_XENT)
-        .learningRate(1e-1f).iterationListener(new ScoreIterationListener(2))
+        .learningRate(ap.learningRate).iterationListener(new ScoreIterationListener(2))
         .nIn(3).nOut(data.labels.length).list(ap.layers)
         .hiddenLayerSizes(ap.hiddenLayersSizes: _*).`override`(new ClassifierOverride(1)).build
 
