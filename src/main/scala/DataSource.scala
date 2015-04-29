@@ -3,7 +3,7 @@ package org.template.classification
 import io.prediction.controller.PDataSource
 import io.prediction.controller.EmptyEvaluationInfo
 import io.prediction.controller.Params
-import io.prediction.data.storage.Storage
+import io.prediction.data.store.PEventStore
 
 import grizzled.slf4j.Logger
 import org.apache.spark.SparkContext
@@ -12,7 +12,7 @@ import org.apache.spark.mllib.regression.LabeledPoint
 import org.apache.spark.rdd.RDD
 
 case class DataSourceParams(
-  appId: Int,
+  appName: String,
   evalK: Option[Int]  // define the k-fold parameter.
 ) extends Params
 
@@ -23,9 +23,8 @@ class DataSource(val dsp: DataSourceParams)
 
   override
   def readTraining(sc: SparkContext): TrainingData = {
-    val eventsDb = Storage.getPEvents()
-    val labeledPoints: RDD[LabeledPoint] = eventsDb.aggregateProperties(
-      appId = dsp.appId,
+    val labeledPoints: RDD[LabeledPoint] = PEventStore.aggregateProperties(
+      appName = dsp.appName,
       entityType = "user",
       // only keep entities with these required properties defined
       required = Some(List("plan", "attr0", "attr1", "attr2")))(sc)
@@ -61,9 +60,8 @@ class DataSource(val dsp: DataSourceParams)
     // illustration purpose, a recommended approach is to factor out this logic
     // into a helper function and have both readTraining and readEval call the
     // helper.
-    val eventsDb = Storage.getPEvents()
-    val labeledPoints: RDD[LabeledPoint] = eventsDb.aggregateProperties(
-      appId = dsp.appId,
+    val labeledPoints: RDD[LabeledPoint] = PEventStore.aggregateProperties(
+      appName = dsp.appName,
       entityType = "user",
       // only keep entities with these required properties defined
       required = Some(List("plan", "attr0", "attr1", "attr2")))(sc)
