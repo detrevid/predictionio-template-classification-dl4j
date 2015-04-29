@@ -5,7 +5,7 @@ A classification engine template that uses Deeplearning4j library.
 The template was based on [template-scala-parallel-classification](http://templates.prediction.io/PredictionIO/template-scala-parallel-classification).
 
 ##1. Install and run PredictionIO
-First you need to [install PredictionIO 0.9.1](http://docs.prediction.io/install/) (if you haven't done it).
+First you need to [install PredictionIO 0.9.2](http://docs.prediction.io/install/) (if you haven't done it).
 Let's say you have installed PredictionIO at /home/yourname/PredictionIO/. For convenience, add PredictionIO's binary command path to your PATH, i.e. /home/yourname/PredictionIO/bin
 
 ```
