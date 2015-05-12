@@ -5,17 +5,20 @@ import io.prediction.controller.Params
 
 import grizzled.slf4j.Logger
 import org.apache.spark.SparkContext
-import org.deeplearning4j.models.featuredetectors.rbm.RBM
 import org.deeplearning4j.nn.api.OptimizationAlgorithm
 import org.deeplearning4j.nn.conf.MultiLayerConfiguration
 import org.deeplearning4j.nn.conf.NeuralNetConfiguration
 import org.deeplearning4j.nn.conf.`override`.ClassifierOverride
-import org.deeplearning4j.nn.layers.factory.PretrainLayerFactory
+import org.deeplearning4j.nn.conf.distribution.UniformDistribution
+import org.deeplearning4j.nn.conf.layers.RBM
 import org.deeplearning4j.nn.multilayer.MultiLayerNetwork
 import org.deeplearning4j.nn.weights.WeightInit
+import org.deeplearning4j.optimize.api.IterationListener
 import org.deeplearning4j.optimize.listeners.ScoreIterationListener
 import org.nd4j.linalg.factory.Nd4j
 import org.nd4j.linalg.lossfunctions.LossFunctions
+
+import scala.collection.JavaConverters._
 
 case class AlgorithmParams(
   iterations: Int = 10,
@@ -37,23 +40,25 @@ class Algorithm(val ap: AlgorithmParams)
     Nd4j.MAX_ELEMENTS_PER_SLICE = -1
     val conf: MultiLayerConfiguration =
       new NeuralNetConfiguration.Builder().iterations(ap.iterations)
-        .layerFactory(new PretrainLayerFactory(classOf[RBM])).weightInit(WeightInit.DISTRIBUTION)
-        .dist(Nd4j.getDistributions.createNormal(0, 1)).activationFunction("tanh")
+        .layer(new RBM).weightInit(WeightInit.DISTRIBUTION)
+        .dist(new UniformDistribution(0, 1)).activationFunction("tanh")
         .momentum(ap.momentum).dropOut(ap.dropOut)
         .optimizationAlgo(OptimizationAlgorithm.LBFGS)
         .constrainGradientToUnitNorm(true).k(1).regularization(true)
         .l2(2e-4).visibleUnit(RBM.VisibleUnit.GAUSSIAN)
         .hiddenUnit(RBM.HiddenUnit.RECTIFIED)
         .lossFunction(LossFunctions.LossFunction.RMSE_XENT)
-        .learningRate(ap.learningRate).iterationListener(new ScoreIterationListener(2))
+        .learningRate(ap.learningRate)
         .nIn(3).nOut(data.labels.length).list(ap.layers)
         .hiddenLayerSizes(ap.hiddenLayersSizes: _*).`override`(new ClassifierOverride(1)).build
 
-    val d: MultiLayerNetwork = new MultiLayerNetwork(conf)
+    val net: MultiLayerNetwork = new MultiLayerNetwork(conf)
+    net.init()
+    net.setListeners(List[IterationListener](new ScoreIterationListener(2)).asJava)
 
-    d.fit(data.dataSet)
+    net.fit(data.dataSet)
 
-    new Model(data.labels, d)
+    new Model(data.labels, net)
   }
 
   def predict(model: Model, query: Query): PredictedResult = {

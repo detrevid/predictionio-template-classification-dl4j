@@ -3,12 +3,12 @@
 cd $1
 
 if [ ! -f deeplearning4j ]; then
-    git clone https://github.com/detrevid/deeplearning4j
+    git clone https://github.com/deeplearning4j/deeplearning4j
 fi
 
 cd deeplearning4j
 git pull
-git checkout e61d34120c9940c4d3abab7fd3021ab912c75a7f
+git checkout 876086d08e90fe2efcd284fb8f3bc524a1f9b618
 cd ..
 
 if [ ! -f nd4j ]; then
@@ -21,13 +21,13 @@ fi
 
 cd nd4j
 git pull
-git checkout 4cc1aedc3e41b27a882290bf048e127ae1f9635d
+git checkout 2680739a512a034c8df41d06d7fe367fba1af3e5
 mvn clean install -DskipTests -Dmaven.javadoc.skip=true
 cd ..
 
 cd Canova
 git pull
-git checkout 84f1bfd6fec03c7b9f3f9fee05481c656421c8c2
+git checkout 7f2aa2944ed1ae6bac91f1a6bbf197803fdd156a
 mvn clean install -DskipTests -Dmaven.javadoc.skip=true
 cd ..
 

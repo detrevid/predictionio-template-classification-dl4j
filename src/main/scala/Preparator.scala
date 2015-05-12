@@ -17,7 +17,6 @@ class Preparator extends PPreparator[TrainingData, PreparedData] {
   @transient lazy val logger = Logger[this.type]
 
   def prepare(sc: SparkContext, trainingData: TrainingData): PreparedData = {
-    this.logger.info("START PREPARE")
     var dFeatures: List[Array[Double]] = List()
     var dLabels: List[String] = List()
     var labelsNames: List[String] = List()
