@@ -1,8 +1,10 @@
-data/*.txt
-manifest.json
-pio.log
-/pio.sbt
 target/
 debug/
 
+#Intellij Idea IDE
 .idea
+
+#PredictionIO
+manifest.json
+pio.log
+/pio.sbt
