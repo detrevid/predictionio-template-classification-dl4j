@@ -33,47 +33,11 @@ cd <YourEngineDir>
 ```
 
 ##3. Set up deeplearning4j
-The template is using the current github version of [Deeplearning4j](https://github.com/deeplearning4j/deeplearning4j).
+Since the newest release the template uses dl4j from official maven repository, so there is no need for manually setting up the library.
 
-###Method 1: Quick Install
-There are 2 scripts provided with the template:
+Be aware that it may change in the future and the template may go back to using latest github version of dl4j.
 
-1. Script that downloads the current version of DL4j from github into given directory and installs it.
-
-     ```
-     .\setup_dl4j.sh <DirectoryForDL4j>
-     ```
-
-2. Script that downloads and installs the newest version of DL4j that template was checked to run properly with.
-
-     ```
-     .\setup_dl4j_stable.sh <DirectoryForDL4j>
-     ```
-
-Each time you want to update the version of the library, you can just run the chosen script again.
-
-###Method 2: Manual
-First you need to get deeplearning4j from github:
-
-```
-cd <DirectoryForDL4j>
-git clone https://github.com/deeplearning4j/deeplearning4j
-```
-
-Then you can install the library:
-
-```
-cd <DirectoryForDL4j>/deeplearning4j
-./setup.sh
-```
-
-Each time you want to update version of the library, you can just type in:
-
-```
-cd <DirectoryForDL4j>/deeplearning4j
-git pull
-./setup.sh
-```
+If you want to use latest version of dl4j anyway, you can fallow the instructions here: [HOWTO](HOWTO.md).
 
 ##4. Next steps
 Follow [Quick Start - Classification Engine Template](http://docs.prediction.io/templates/classification/quickstart/) starting from the 3. subsection.
